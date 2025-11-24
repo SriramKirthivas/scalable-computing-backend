@@ -1,4 +1,4 @@
-from flask import Flask, send_file, jsonify, request
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import numpy as np
 from collections import deque
@@ -188,7 +188,14 @@ eye_tracker = EyeTracker(violation_threshold=80, max_violations=5)
 
 @app.route('/')
 def index():
-    return send_file('index.html')
+    return jsonify({
+        'status': 'online',
+        'message': 'Eye Tracking API Server',
+        'endpoints': {
+            '/process_frame': 'POST - Process webcam frame',
+            '/reset_tracking': 'POST - Reset tracking data'
+        }
+    })
 
 @app.route('/process_frame', methods=['POST'])
 def process_frame():
